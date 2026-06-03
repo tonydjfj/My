@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,72 +7,94 @@
 <title>Scroll Video Hero</title>
 
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  background: black;
-  overflow-x: hidden;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-.video-wrap {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1;
+body{
+  background:#000;
+  overflow-x:hidden;
+  font-family:sans-serif;
 }
 
-#v {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+/* Hero section */
+.hero{
+  position:relative;
+  height:300vh; /* amount of scroll used for video */
 }
 
-.scroll-space {
-  height: 600vh;
+.video-wrap{
+  position:sticky;
+  top:0;
+  width:100%;
+  height:100vh;
+  overflow:hidden;
 }
 
-.content {
-  position: relative;
-  z-index: 2;
-  margin-top: 100vh;
-  background: white;
-  min-height: 100vh;
-  padding: 50px;
+#v{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* Content below hero */
+.content{
+  background:white;
+  color:black;
+  min-height:100vh;
+  padding:80px;
+}
+
+h1{
+  font-size:4rem;
+  margin-bottom:20px;
 }
 </style>
 </head>
 <body>
 
-<div class="video-wrap">
-  <video id="v" muted playsinline preload="auto">
-    <source src="https://res.cloudinary.com/dbiu0zob7/video/upload/MVI_0166_rbqi89.mp4" type="video/mp4">
-  </video>
-</div>
+<section class="hero">
 
-<div class="scroll-space"></div>
+  <div class="video-wrap">
+    <video id="v" muted playsinline preload="auto">
+      <source src="https://res.cloudinary.com/dbiu0zob7/video/upload/MVI_0166_rbqi89.mp4" type="video/mp4">
+    </video>
+  </div>
+
+</section>
+
+<section class="content">
+  <h1>Your Website</h1>
+  <p>Put the rest of your page here.</p>
+</section>
 
 <script>
-const video = document.getElementById("v");
+const hero = document.querySelector('.hero');
+const video = document.getElementById('v');
 
-video.addEventListener("loadedmetadata", () => {
+video.addEventListener('loadedmetadata', () => {
 
-  const maxScroll =
-    document.documentElement.scrollHeight - window.innerHeight;
+  function update() {
 
-  function updateVideo() {
-    const progress = Math.min(window.scrollY / maxScroll, 1);
+    const rect = hero.getBoundingClientRect();
+    const heroHeight = hero.offsetHeight - window.innerHeight;
+
+    let progress = -rect.top / heroHeight;
+
+    progress = Math.max(0, Math.min(progress, 1));
 
     video.currentTime = progress * video.duration;
 
-    requestAnimationFrame(updateVideo);
+    requestAnimationFrame(update);
   }
 
-  updateVideo();
+  update();
 });
 </script>
 
 </body>
 </html>
+```
