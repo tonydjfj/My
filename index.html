@@ -1,6 +1,66 @@
-<p class="codepen" data-height="300" data-pen-title="for portfolio" data-default-tab="result" data-slug-hash="azBZmpg" data-user="Anthony-Selwanis-Student-FVHS" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
-  <span>See the Pen <a href="https://codepen.io/Anthony-Selwanis-Student-FVHS/pen/azBZmpg">
-  for portfolio</a> by Anthony Selwanis (Student FVHS) (<a href="https://codepen.io/Anthony-Selwanis-Student-FVHS">@Anthony-Selwanis-Student-FVHS</a>)
-  on <a href="https://codepen.io">CodePen</a>.</span>
-</p>
-<script async src="https://public.codepenassets.com/embed/index.js"></script>
+<div class="video-wrap">
+  <video id="v" muted playsinline preload="auto">
+    <source src="https://www.dropbox.com/scl/fi/m56c0sqrx3r6euolo64i4/MVI_0166.MP4?rlkey=qdp9drx9gg4qbtl23pptz3a4u&st=v226l62l&dl=1" type="video/mp4">
+  </video>
+</div>
+
+<div class="scroll-space"></div>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: black;
+}
+
+.video-wrap {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#v {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scroll-space {
+  height: 400vh;
+}
+</style>
+
+<script>
+const v = document.getElementById("v");
+const s = document.querySelector(".scroll-space");
+
+let d = 0;
+let t = 0;
+let c = 0;
+
+v.addEventListener("loadedmetadata", () => {
+  d = v.duration;
+});
+
+window.addEventListener("scroll", () => {
+  if (!d) return;
+
+  const max = s.offsetHeight - innerHeight;
+  const p = Math.min(scrollY / max, 1);
+
+  t = p * d;
+});
+
+(function a() {
+  c += (t - c) * 0.08;
+
+  if (Math.abs(v.currentTime - c) > 0.01) {
+    v.currentTime = c;
+  }
+
+  requestAnimationFrame(a);
+})();
+</script>
