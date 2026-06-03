@@ -1,3 +1,77 @@
-<video id="v" muted playsinline preload="auto">
-  <source src="https://res.cloudinary.com/dbiu0zob7/video/upload/MVI_0166_rbqi89.mp4" type="video/mp4">
-</video>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll Video Hero</title>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  background: black;
+  overflow-x: hidden;
+}
+
+.video-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+#v {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.scroll-space {
+  height: 600vh;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  margin-top: 100vh;
+  background: white;
+  min-height: 100vh;
+  padding: 50px;
+}
+</style>
+</head>
+<body>
+
+<div class="video-wrap">
+  <video id="v" muted playsinline preload="auto">
+    <source src="https://res.cloudinary.com/dbiu0zob7/video/upload/MVI_0166_rbqi89.mp4" type="video/mp4">
+  </video>
+</div>
+
+<div class="scroll-space"></div>
+
+<script>
+const video = document.getElementById("v");
+
+video.addEventListener("loadedmetadata", () => {
+
+  const maxScroll =
+    document.documentElement.scrollHeight - window.innerHeight;
+
+  function updateVideo() {
+    const progress = Math.min(window.scrollY / maxScroll, 1);
+
+    video.currentTime = progress * video.duration;
+
+    requestAnimationFrame(updateVideo);
+  }
+
+  updateVideo();
+});
+</script>
+
+</body>
+</html>
